@@ -8,17 +8,17 @@ An API for philosophy data.
 
 * Rationale
    
-  There are many great sources for philosophy papers and readings:
+There are many great sources for philosophy papers and readings:
   
-  - Extremely high quality articles on the [[http://plato.stanford.edu/][Stanford Encyclopedia of
-    Philosophy]]
-  - More high quality articles on the [[http://www.iep.utm.edu][University of Tennessee Martin]]
-  - [[http://www.jstor.org][JSTOR]] has a ton of papers available, some free, some through
-    institutional access.
-  - [[http://philpapers.org][Philpapers]] has a huge database of contemporary philosophy papers.
-  - Project Gutenberg has a [[http://www.gutenberg.org/wiki/Philosophy_(Bookshelf][philosophy bookshelf]]
-  - and many more...
-  
+- Extremely high quality articles on the [[http://plato.stanford.edu/][Stanford Encyclopedia of
+  Philosophy]]
+- More high quality articles on the [[http://www.iep.utm.edu][University of Tennessee Martin]]
+- [[http://www.jstor.org][JSTOR]] has a ton of papers available, some free, some through
+  institutional access.
+- [[http://philpapers.org][Philpapers]] has a huge database of contemporary philosophy papers.
+- Project Gutenberg has a [[http://www.gutenberg.org/wiki/Philosophy_(Bookshelf][philosophy bookshelf]]
+- and many more...
+
   These are free, academic resources for high-quality philosophy. On
   the other hand, popular culture---[[https://news.ycombinator.com/item?id=8709597][especially Silicon Valley tech
   culture]]---does not seem to value academic philosophy. Certain
@@ -43,86 +43,90 @@ An API for philosophy data.
 
 * Contributing
    
-   I take notes in =.org= files in this repo. I plan features and todos
-   in Orgmode and sometimes GitHub issues.
+I take notes in =.org= files in this repo. I plan features and todos
+in Orgmode and sometimes GitHub issues.
    
-   This is a WIP, but if you would like to get involved, you can
-   contact me via email or [[https://twitter.com/bensima][twitter]], or just start working on issues. I
-   generally try to follow [[https://guides.github.com/introduction/flow/][GitHub Flow]].
+This is a WIP, but if you would like to get involved, you can
+contact me via email or [[https://twitter.com/bensima][twitter]], or just start working on issues. I
+generally try to follow [[https://guides.github.com/introduction/flow/][GitHub Flow]].
    
 * Planning
    
-   *Current Overarching Goal*: To download all of the SEP articles and
-   run a document clustaring algorithm on them.  Because I would like
-   to know how all of these articles are related!
+*Current Overarching Goal*: To download all of the SEP articles and
+run a document clustaring algorithm on them.  Because I would like
+to know how all of these articles are related!
    
-   This project is to be a system of computation for processing data
-   related to philosophy papers, history, etc. I also expect it to be
-   state-of-the-art with respect to computer science. After all, I
-   should have some fun with this.
+This project is to be a system of computation for processing data
+related to philosophy papers, history, etc. I also expect it to be
+state-of-the-art with respect to computer science. After all, I
+should have some fun with this.
    
-   My latest idea is to distribute a collection of services in a
-   [[https://github.com/svanderburg/disnix][Disnix]] cluster (or perhapse just with [[https://nixos.org/nixops/][NixOps]]). Each node in the
-   cluster should be easy to setup and deploy with a simple script
-   (all you have to do is get the [[http://sandervanderburg.blogspot.com/2011/02/disnix-toolset-for-distributed.html][DisnixService]] installed and running
-   on a machine, add it to the configuration, and run =disnix-env
-   ...=). This would allow easy deployment for people that want to
-   support Aristotl but may not be able to program. See for example
-   [[https://github.com/kiberpipa/nix-rehash#recontain---herokuhome][nix-rehash]].
+My latest idea is to distribute a collection of services in a
+[[https://github.com/svanderburg/disnix][Disnix]] cluster (or perhapse just with [[https://nixos.org/nixops/][NixOps]]). Each node in the
+cluster should be easy to setup and deploy with a simple script
+(all you have to do is get the [[http://sandervanderburg.blogspot.com/2011/02/disnix-toolset-for-distributed.html][DisnixService]] installed and running
+on a machine, add it to the configuration, and run =disnix-env
+...=). This would allow easy deployment for people that want to
+support Aristotl but may not be able to program. See for example
+[[https://github.com/kiberpipa/nix-rehash#recontain---herokuhome][nix-rehash]].
    
-   I have this down to the following services:
+I have this down to the following services:
    
 ** =./graph/= - A graph database of article/relations
 
-   *Status:* In progress
+*Status:* In progress
 
-   This uses [[https://github.com/dakrone/itsy][the itsy web spider]] to crawl the SEP, store the text
-   content into ElasticSearch and store metadata into Datomic. The
-   metadata of interest includes the references that each article 
-   makes to every *other* article, thus forming a graph of
-   philosophical relations. I will make this graph queryable via HTTP
-   by simply exposing the Datomic interface for Datalog queries.
+This uses [[https://github.com/dakrone/itsy][the itsy web spider]] to crawl the SEP, store the text
+content into ElasticSearch and store metadata into Datomic. The
+metadata of interest includes the references that each article
+makes to every *other* article, thus forming a graph of
+philosophical relations. I will make this graph queryable via HTTP
+by simply exposing the Datomic interface for Datalog queries.
 
-   Part of the reason for storing the full content in ElasticSearch is
-   for furthing data mining later on and improving the relationships
-   in the graph.
+Part of the reason for storing the full content in ElasticSearch is
+for furthing data mining later on and improving the relationships
+in the graph.
+
+The data mining computations will be run with [[http://www.onyxplatform.org/][Onyx]]. The flexibility of Onyx
+makes it possible to describe workflows at runtime, and stitch together any code
+that transforms regular Clojure maps.
       
 ** =./api/= - Haskell: Parser, Content, and Citation Service
 
-   *Status:* In design (also, I need to learn Haskell)
+*Status:* In design (also, I need to learn Haskell)
    
 *** Parser
      
-    This will parse the article source text from ElasitSearch into
-    [[http://johnmacfarlane.net/BayHac2014/doc/pandoc-types/Text-Pandoc-Definition.html][Pandoc Native]], and then deliver it via a REST-like endpoint. This
-    will allow the content to be delivered in any format that Pandoc
-    can write to, but it also allows further analysis. Pandoc Native
-    is basically an AST for formatted text, which means I can walk
-    this tree structure and look for patterns, other informal
-    references, etc. and use this to fill out the graph even more.
+This will parse the article source text from ElasitSearch into
+[[http://johnmacfarlane.net/BayHac2014/doc/pandoc-types/Text-Pandoc-Definition.html][Pandoc Native]], and then deliver it via a REST-like endpoint. This
+will allow the content to be delivered in any format that Pandoc
+can write to, but it also allows further analysis. Pandoc Native
+is basically an AST for formatted text, which means I can walk
+this tree structure and look for patterns, other informal
+references, etc. and use this to fill out the graph even more.
 
 *** Citations
      
-    With the Parser in place, I can specifically isolate the
-    bibliographies of the articles and extract citations with the
-    [[http://istitutocolli.org/repos/citeproc-hs/][Citation Style Language]] (pandoc has [[http://hackage.haskell.org/package/pandoc-citeproc][an addon]] for this).
+With the Parser in place, I can specifically isolate the
+bibliographies of the articles and extract citations with the
+[[http://istitutocolli.org/repos/citeproc-hs/][Citation Style Language]] (pandoc has [[http://hackage.haskell.org/package/pandoc-citeproc][an addon]] for this).
 
 *** Other ideas
 
-    - Since, on the Haskell API side of things, I'll have access to an
-      abstract syntax tree of both the article contents /and/ the
-      bibliographies, it would be possible to do some kind of static
-      analysis.
-    - Create a scripting platform with, for example, Lua, to allow
-      other people to extract more analyses from the services.
-    
+- Since, on the Haskell API side of things, I'll have access to an
+  abstract syntax tree of both the article contents /and/ the
+  bibliographies, it would be possible to do some kind of static
+  analysis.
+- Create a scripting platform with, for example, Lua, to allow
+  other people to extract more analyses from the services.
+
 * Financial Support
    
-  The heavy computation I'm describing will require quite a bit of
-  processor power, thus I think financial support is necessary. To
-  begin, I think I should bootstrap with just one instance, but then
-  scale up manually as necessary. I shall commit to always running one
-  instance on my own dime, but I shall go to others if I need more
-  instances. To start, these would be manually provisioned, of course,
-  but in the future they could be automated with Nix (perhaps even
-  with a one-click interface, like Heroku has).
+The heavy computation I'm describing will require quite a bit of
+processor power, thus I think financial support is necessary. To
+begin, I think I should bootstrap with just one instance, but then
+scale up manually as necessary. I shall commit to always running one
+instance on my own dime, but I shall go to others if I need more
+instances. To start, these would be manually provisioned, of course,
+but in the future they could be automated with Nix (perhaps even
+with a one-click interface, like Heroku has).
