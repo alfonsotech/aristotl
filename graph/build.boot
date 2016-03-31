@@ -1,11 +1,11 @@
 (set-env! :source-paths   #{"src" "test"}
           :resource-paths #{"resources" "config"}
-          :dependencies   '[[org.clojure/clojure "1.7.0"]
-                            [org.clojure/core.typed "0.3.18"]
+          :dependencies   '[[org.clojure/clojure "1.8.0"]
+                            [org.clojure/core.typed "0.3.22"]
                             [org.clojure/core.match "0.3.0-alpha4"]
                             [org.clojure/tools.logging "0.3.1"]
                             [org.clojure/core.async "0.2.374"]
-                            [adzerk/boot-test "1.0.5" :scope "test"]
+                            [adzerk/boot-test "1.1.1" :scope "test"]
                             [robert/hooke "1.3.0"]
 
                             [mount "0.1.10"]
@@ -14,12 +14,12 @@
 
                             [itsy "0.1.1"
                              :exclusions [org.slf4j/slf4j-log4j12]]
-                            [clj-http   "2.0.0"]
-                            [adzerk/env "0.2.0"]
+                            [clj-http   "2.1.0"]
+                            [adzerk/env "0.3.0"]
                             [enlive     "1.1.6"]
 
                             ;; ElasticSearch
-                            [org.elasticsearch/elasticsearch "2.0.0"
+                            [org.elasticsearch/elasticsearch "2.3.0"
                                    :exclusions [org.antlr/antlr-runtime
                                                 org.apache.lucene/lucene-analyzers-common
                                                 org.apache.lucene/lucene-grouping
@@ -36,19 +36,19 @@
                                                 org.ow2.asm/asm-commons]]
 
                             ;; Datomic
-                            [com.datomic/datomic-free "0.9.5327"
+                            [com.datomic/datomic-free "0.9.5350"
                              :exclusions [joda-time
                                           org.slf4j/slf4j-nop
                                           org.slf4j/slf4j-log4j12]]
-                            [io.rkn/conformity "0.3.7"
+                            [io.rkn/conformity "0.4.0"
                              :exclusions [com.datomic/datomic-free]]
 
                             ;; Logging
-                            [ch.qos.logback/logback-classic "1.1.3"
+                            [ch.qos.logback/logback-classic "1.1.7"
                              :exclusions [org.slf4j/slf4j-api]]
-                            [org.slf4j/jul-to-slf4j "1.7.13"]
-                            [org.slf4j/jcl-over-slf4j "1.7.13"]
-                            [org.slf4j/log4j-over-slf4j "1.7.13"]])
+                            [org.slf4j/jul-to-slf4j "1.7.20"]
+                            [org.slf4j/jcl-over-slf4j "1.7.20"]
+                            [org.slf4j/log4j-over-slf4j "1.7.20"]])
 
 (def +version+ "0.0.1-SNAPSHOT")
 (task-options! pom {:project 'aristotl
