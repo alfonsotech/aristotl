@@ -6,9 +6,9 @@
                             [org.clojure/tools.logging "0.3.1"]
                             [org.clojure/core.async "0.2.374"]
                             [adzerk/boot-test "1.0.5" :scope "test"]
+                            [robert/hooke "1.3.0"]
 
-                            [com.stuartsierra/component "0.3.0"]
-                            [org.danielsz/system "0.1.9"] ;; also provides reloaded.repl
+                            [mount "0.1.10"]
                             [io.pedestal/pedestal.service "0.4.1"]
                             [io.pedestal/pedestal.jetty   "0.4.1"]
 
@@ -17,7 +17,6 @@
                             [clj-http   "2.0.0"]
                             [adzerk/env "0.2.0"]
                             [enlive     "1.1.6"]
-                            [org.onyxplatform/onyx "0.8.0"]
 
                             ;; ElasticSearch
                             [org.elasticsearch/elasticsearch "2.0.0"
@@ -51,22 +50,23 @@
                             [org.slf4j/jcl-over-slf4j "1.7.13"]
                             [org.slf4j/log4j-over-slf4j "1.7.13"]])
 
-(def version "0.0.1-SNAPSHOT")
+(def +version+ "0.0.1-SNAPSHOT")
 (task-options! pom {:project 'aristotl
-                    :version (str version "-standalone")
+                    :version (str +version+ "-standalone")
                     :description "FIXME: write description"
                     :license {"MIT" "See LICENSE.txt"}})
 
-;; == Cider REPL =========================================
+
 
 (require 'boot.repl)
 (swap! boot.repl/*default-dependencies*
        concat '[[cider/cider-nrepl "0.8.2"]])
 
+
 (swap! boot.repl/*default-middleware*
        conj 'cider.nrepl/cider-middleware)
 
-;; == Datomic =============================================
+
 (load-data-readers!)
 
 (deftask bootstrap
@@ -75,19 +75,17 @@
   (require '[aristotl.database :as db])
   ((resolve 'db/bootstrap!) @(resolve 'aristotl.db/uri)))
 
-;; == Server Tasks =========================================
 
-(require '[reloaded.repl :refer [init start stop go reset]]
-         '[aristotl.systems :refer [dev-system]]
-         '[system.boot :refer [system run]])
+(require '[clojure.tools.namespace.repl :refer [set-refresh-dirs]])
 
 (deftask dev []
-  (comp
-   (watch :verbose true)
-   (speak :theme "ordinance")
-   (system :sys #'dev-system :hot-reload true
-           :files ["database.clj" "routes.clj" "spider.clj" "service.clj"])
-   (repl :server true)))
+  (set-env! :source-paths #(conj % "dev"))
+
+  (apply set-refresh-dirs (get-env :directories))
+  (load-data-readers!) ;; for datomic
+
+  (require 'dev)
+  (in-ns 'dev))
 
 
 (deftask build

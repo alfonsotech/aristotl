@@ -1,7 +1,7 @@
 (ns aristotl.service
-  (:require [io.pedestal.http :as http]
+  (:require [mount.core :refer [defstate]]
+            [io.pedestal.http :as http]
             [io.pedestal.http.route.definition :refer [defroutes]]
-            [com.stuartsierra.component :as component]
             [clojure.tools.logging :as log]
             [aristotl.routes :refer [routes]]
             [aristotl.database :as db]
@@ -20,19 +20,15 @@
    ::http/resource-path "/public"
    ::http/routes routes})
 
-(defrecord Pedestal [config datomic]
-  component/Lifecycle
+(defn start-pedestal [config]
+  (let [svc (http/create-server config)]
+    (log/info "Starting Pedestal")
+    ;;(db/bootstrap! db/uri)
+    (http/start svc)))
 
-  (start [component]
-    (let [service (http/create-server config)]
-      (log/info "Starting Pedestal component")
-      ;;(db/bootstrap! db/uri)
-      (http/start service)
-      (assoc component :service service)))
+(defn stop-pedestal []
+  (http/stop))
 
-  (stop [component]
-    (log/info "Stopping Pedestal component")
-    (update-in component [:service] http/stop)))
-
-(defn new-pedestal [config]
-  (map->Pedestal config))
+(defstate pedestal
+  :start start-pedestal
+  :stop stop-pedestal)

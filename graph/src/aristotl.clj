@@ -1,9 +1,20 @@
 (ns aristotl
   "The entrypoint."
-  (:require [reloaded.repl :refer [set-init! go]]
-            [aristotl.systems :refer [dev-system]]))
+  (:gen-class)
+  (:require [clojure.tools.nrepl.server :refer [start-server stop-server]]
+            [mount.core :as mount :refer [defstate]]
+            [aristotl
+             [spider]]))
 
+;; example on creating a network REPL
+(defn- start-nrepl [{:keys [host port]}]
+  (start-server :bind host :port port))
+
+;; nREPL is just another simple state
+(defstate nrepl
+  :start (start-nrepl)
+  :stop (stop-server nrepl))
+
+;; example of an app entry point
 (defn -main [& args]
-  (let [system (or (first args) #'dev-system)]
-    (set-init! system)
-    (go)))
+  (mount/start))

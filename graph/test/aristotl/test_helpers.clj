@@ -7,13 +7,13 @@
 
 (defonce ^:private service-fn (atom nil))
 
-(defn test-service
-  "Return a service-fn for use with Pedestal's `response-for` test helper."
-  []
-  (db/bootstrap! db/uri)
-  (swap! service-fn #(or % (::http/service-fn (http/create-servlet aristotl/service)))))
+#_(defn test-service
+      "Return a service-fn for use with Pedestal's `response-for` test helper."
+      []
+      (db/bootstrap! db/uri)
+      (swap! service-fn #(or % (::http/service-fn (http/create-servlet aristotl/service)))))
 
-(defn with-seeds
+#_(defn with-seeds
   "Return a db with seed tx-data applied"
   ([tx-data] (with-seeds (d/db (d/connect db/uri)) tx-data))
   ([db tx-data]

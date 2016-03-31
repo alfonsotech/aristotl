@@ -2,7 +2,7 @@
   "The Spider component crawls encyclopedia pages. The custom handler
   stores the content into ElasticSearch and the metadata into
   Datomic."
-  (:require [com.stuartsierra.component :as component]
+  (:require [mount.core :refer [defstate]]
             [clojure.tools.logging :as log]
             [adzerk.env :as env]
             [itsy.core :as itsy]
@@ -20,28 +20,18 @@
   (if (= (count body) 0)
     (log/warn "Itsy found no links on" url)))
 
+
 (def sources
   "Schema: {<3-letter name> <itsy crawl settings>}"
   {:sep {:url "http://plato.stanford.edu/contents.html"
          :handler log-handler
          :workers 5
-         :url-limit -1
+         :url-limit 10
          :url-extractor itsy/extract-all ;; FIXME: study itsy/extract-all and make my own implementation ??
          :http-opts {}
          :host-limit true
          :polite? true}})
 
-;; An itsy component
-(defrecord Itsy [crawl-settings elasticsearch datomic]
-  component/Lifecycle
-  (start [this]
-    (log/info "Starting Itsy component")
-    (assoc this :spider (itsy/crawl crawl-settings)))
-  (stop [this]
-    (log/info "Stopping Itsy component")
-    (itsy/stop-workers (:spider this))
-    (assoc this :spider nil)))
-
-(defn new-itsy
-  [crawl-settings]
-  (map->Itsy {:crawl-settings crawl-settings}))
+(defstate crawler
+  :start (itsy/crawl (:sep sources))
+  :stop (itsy/stop-workers crawler))
