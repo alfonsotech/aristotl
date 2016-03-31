@@ -1,11 +1,15 @@
 (ns dev
-  (:require [clojure.pprint :refer [pprint]]
+  (:require (clojure
+             [pprint :refer [pprint]]
+             [test :as t])
+            [clojure.core.match :refer [match]]
             [clojure.tools.namespace.repl :as tn]
             [boot.core :refer [load-data-readers!]]
             [mount.core :as mount :refer [defstate]]
             [mount.tools.graph :refer [states-with-deps]]
             [aristotl
              [util :refer [with-logging-status]]
+             [db]
              [spider]]))
 
 
@@ -35,5 +39,17 @@
   []
   (stop)
   (tn/refresh :after 'dev/go))
+
+(def ^{:arglists '([ns] [:all])}
+  retest
+  "Refreshes and runs tests on namespaces. When :all is the only arg, runs all
+  tests. When args is a list of quoted namespaces, args is applied to
+  clojure.test/run-tests"
+  (fn [& args]
+    (refresh)
+    (match [args]
+      [(:or [] nil)]  (println "Please supply quoted namespaces or `:all' to run tests.")
+      [([:all] :seq)] (t/run-all-tests)
+      [([& ns] :seq)] (apply t/run-tests ns))))
 
 (load-data-readers!)

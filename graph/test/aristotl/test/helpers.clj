@@ -1,4 +1,4 @@
-(ns aristotl.test-helpers
+(ns aristotl.test.helpers
   (:require [datomic.api :as d]
             [io.pedestal.http :as http]
             [io.pedestal.test :refer [response-for]]

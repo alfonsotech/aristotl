@@ -58,7 +58,8 @@
 
 
 
-(require 'boot.repl)
+(require 'boot.repl
+         '[clojure.tools.namespace.repl :refer [refresh]])
 (swap! boot.repl/*default-dependencies*
        concat '[[cider/cider-nrepl "0.8.2"]])
 
