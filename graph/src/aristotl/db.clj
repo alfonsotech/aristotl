@@ -1,4 +1,4 @@
-(ns aristotl.database
+(ns aristotl.db
   "Datomic bootstrap and Datomic + Pedestal interceptor"
   (:require [datomic.api :as d]
             [io.pedestal.interceptor :refer [interceptor]]

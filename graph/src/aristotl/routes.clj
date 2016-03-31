@@ -2,7 +2,7 @@
   (:require [io.pedestal.http.route.definition :refer [defroutes]]
             [datomic.api :as d]
             [ring.util.response :as ring-resp]
-            [aristotl.database :as db]))
+            [aristotl.db :as db]))
 
 (defn hello-world
   [request]

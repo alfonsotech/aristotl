@@ -4,7 +4,7 @@
             [io.pedestal.http.route.definition :refer [defroutes]]
             [clojure.tools.logging :as log]
             [aristotl.routes :refer [routes]]
-            [aristotl.database :as db]
+            [aristotl.db :as db]
             [adzerk.env :as env]))
 
 ;; Dev environment stuff. This will be overridden on prod

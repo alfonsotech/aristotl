@@ -72,7 +72,7 @@
 (deftask bootstrap
   "Bootstrap the Datomic database"
   []
-  (require '[aristotl.database :as db])
+  (require '[aristotl.db :as db])
   ((resolve 'db/bootstrap!) @(resolve 'aristotl.db/uri)))
 
 

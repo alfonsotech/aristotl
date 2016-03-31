@@ -3,7 +3,7 @@
             [io.pedestal.http :as http]
             [io.pedestal.test :refer [response-for]]
             [cheshire.core :as json]
-            [aristotl.database :as db]))
+            [aristotl.db :as db]))
 
 (defonce ^:private service-fn (atom nil))
 
