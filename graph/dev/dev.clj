@@ -11,7 +11,7 @@
 
 (defn start []
   (with-logging-status)
-  (mount/start #'aristotl.spider/crawler))
+  (mount/start #'aristotl.spider/crawler #'aristotl.db/conn))
 
 (defn stop []
   (mount/stop))
