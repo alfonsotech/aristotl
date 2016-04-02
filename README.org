@@ -51,12 +51,10 @@ contact me via email or [[https://twitter.com/bensima][twitter]], or just start 
 generally try to follow [[https://guides.github.com/introduction/flow/][GitHub Flow]].
    
 * Financial Support
-   
-The heavy computation I'm describing will require quite a bit of
-processor power, thus I think financial support is necessary. To
-begin, I think I should bootstrap with just one instance, but then
-scale up manually as necessary. I shall commit to always running one
-instance on my own dime, but I shall go to others if I need more
-instances. To start, these would be manually provisioned, of course,
-but in the future they could be automated with Nix (perhaps even
-with a one-click interface, like Heroku has).
+
+- I shall always run one instance on my own dime
+- other people can contribute instances if more are necessary. (Ideally, it
+  would be easy to coordinate these automatically a la a botnet, so people can
+  spin up new instances whenever they want.)
+
+Seriously considering using [[https://www.patreon.com/][Patreon]].
