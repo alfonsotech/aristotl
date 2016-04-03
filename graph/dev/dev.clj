@@ -1,6 +1,7 @@
 (ns dev
   (:require (clojure
              [pprint :refer [pprint]]
+             [repl :refer :all]
              [test :as t])
             [clojure.core.match :refer [match]]
             [clojure.tools.namespace.repl :as tn]
@@ -9,19 +10,19 @@
             [mount.tools.graph :refer [states-with-deps]]
             [aristotl
              [util :refer [with-logging-status]]
+             [parse]
              [db]
              [spider]]))
 
 
 (defn start []
   (with-logging-status)
-  (mount/start #'aristotl.spider/crawler #'aristotl.db/conn))
+  (mount/start #'aristotl.parse/parser #'aristotl.spider/crawler #'aristotl.db/conn))
 
 (defn stop []
   (mount/stop))
 
 (defn refresh []
-  (stop)
   (tn/refresh))
 
 (defn refresh-all []
