@@ -14,9 +14,11 @@
 
                             [itsy "0.1.1"
                              :exclusions [org.slf4j/slf4j-log4j12]]
+                            [sleipnir   "0.2.2"]
                             [clj-http   "2.1.0"]
                             [adzerk/env "0.3.0"]
                             [enlive     "1.1.6"]
+                            [funcool/cats "1.2.1"]
 
                             ;; ElasticSearch
                             [org.elasticsearch/elasticsearch "2.3.0"
